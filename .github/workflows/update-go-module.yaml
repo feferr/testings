@@ -15,7 +15,7 @@ jobs:
 
       - name: Set repository name as module name
         run: |
-          NEW_MODULE_NAME="${{ github.repository }}"  # This will set NEW_MODULE_NAME to "owner/repo" (e.g., "feferr/testings")
+          NEW_MODULE_NAME="${{ github.repository }}"
           go mod edit -module $NEW_MODULE_NAME
           go mod tidy
 
@@ -28,9 +28,9 @@ jobs:
 
       - name: Commit and push updated go.mod
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add go.mod go.sum
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
           git commit -m "Update Go module name"
           git push
 
