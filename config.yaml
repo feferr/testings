@@ -1,0 +1,8 @@
+app:
+  name: "CLI Biolerplate"
+
+aws:
+  region: "eu-central-1"
+
+api:
+  url: "https://ipinfo.io/ip"

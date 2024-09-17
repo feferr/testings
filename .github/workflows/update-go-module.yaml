@@ -1,0 +1,41 @@
+name: Update Go Module
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-module:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set repository name as module name
+        run: |
+          NEW_MODULE_NAME="${{ github.repository }}"
+          go mod edit -module $NEW_MODULE_NAME
+          go mod tidy
+
+      - name: Update package references
+        run: |
+          OLD_PACKAGE_NAME="urbanmedia/go-cli-boilerplate"
+          NEW_PACKAGE_NAME="${{ github.repository }}"
+          go mod edit -replace=$OLD_PACKAGE_NAME=$NEW_PACKAGE_NAME
+          go mod tidy
+
+      - name: Commit and push updated go.mod
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add go.mod go.sum
+          git commit -m "Update Go module name"
+          git push
+
+      - name: Delete the GitHub Actions workflow file
+        run: |
+          git rm .github/workflows/update-go-module.yaml
+          git commit -m "Remove workflow after execution"
+          git push

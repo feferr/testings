@@ -1,0 +1,15 @@
+services:
+  cli-app:
+    build: .
+    container_name: go-cli-boilerplate
+    ports:
+      - "8080:8080"  # Expose port if your CLI app is web-based or has an API
+    environment:
+      - AWS_REGION=eu-central-1
+    networks:
+      - cli-app-network
+    depends_on:
+      - postgres
+
+networks:
+  cli-app-network:
