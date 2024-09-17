@@ -15,14 +15,14 @@ jobs:
 
       - name: Set repository name as module name
         run: |
-          NEW_MODULE_NAME="${{ github.repository }}"
+          NEW_MODULE_NAME="github.com/${{ github.repository }}"
           go mod edit -module $NEW_MODULE_NAME
           go mod tidy
 
       - name: Update package references
         run: |
           OLD_PACKAGE_NAME="urbanmedia/go-cli-boilerplate"
-          NEW_PACKAGE_NAME="${{ github.repository }}"
+          NEW_PACKAGE_NAME="github.com/${{ github.repository }}"
           go mod edit -replace=$OLD_PACKAGE_NAME=$NEW_PACKAGE_NAME
           go mod tidy
 
@@ -33,6 +33,13 @@ jobs:
           git add go.mod go.sum
           git commit -m "Update Go module name"
           git push
+
+      - name: Delete the GitHub Actions workflow file
+        run: |
+          git rm .github/workflows/update-go-module.yaml
+          git commit -m "Remove workflow after execution"
+          git push
+
 
       - name: Delete the GitHub Actions workflow file
         run: |
