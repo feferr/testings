@@ -22,7 +22,7 @@ jobs:
       - name: Update import paths in the source code
         run: |
           OLD_PACKAGE_NAME="urbanmedia/go-cli-boilerplate"
-          NEW_PACKAGE_NAME="feferr/testings"
+          NEW_PACKAGE_NAME="${{ github.repository }}"
           # Find and replace the old package name with the new one in the Go files
           find . -type f -name '*.go' -exec sed -i "s|$OLD_PACKAGE_NAME|$NEW_PACKAGE_NAME|g" {} +
 
